@@ -30,7 +30,7 @@ app.use((err,req,res,next) => {
     })
 })
 
-mongoose.connect("mongodb://localhost:27017/synapse")
+mongoose.connect(process.env._MONGOURL)
 .then(() => {
     app.listen(process.env.PORT || 8080, () => console.log('Server is running'));
 })
