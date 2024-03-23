@@ -3,13 +3,26 @@ const Patient = require('../Models/Patient');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { ObjectId, BSON } = require('mongodb');
+const { validationResult } = require('express-validator');
 
 exports.postSignup = (req,res,next) => {
+    const validationError = validationResult(req);
+    if(!validationError.isEmpty()){
+        const error = new Error("Validation error");
+        error.statusCode = 403;
+        throw error;
+    }
     const userName = req.body.signupName;
     const email = req.body.signupEmail;
     const password = req.body.signupPassword;
     const userId = req.body.signupId;
     const userCentre = req.body.signupCentre;
+    const confirmPass = req.body.signupCpassword;
+    if(confirmPass !== password){
+        const error = new Error("Validation error");
+        error.statusCode = 403;
+        throw error;
+    }
     User.findOne({email: email})
     .then(user => {
         if(user) {
@@ -60,6 +73,12 @@ exports.postSignup = (req,res,next) => {
 }
 
 exports.postLogin = (req,res,next) => {
+    const validationError = validationResult(req);
+    if(!validationError.isEmpty()){
+        const error = new Error("Validation error");
+        error.statusCode = 403;
+        throw error;
+    }
     const email = req.body.loginemail;
     const password = req.body.loginpassword;
     let currUser;
