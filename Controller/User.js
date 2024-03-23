@@ -1,6 +1,7 @@
 const User = require('../Models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { ObjectId, BSON } = require('mongodb');
 
 exports.postSignup = (req,res,next) => {
     const userName = req.body.signupName;
@@ -102,5 +103,45 @@ exports.postLogin = (req,res,next) => {
             err.statusCode = 500;
         }
         next(err);
+    })
+}
+
+exports.getProfile = (req,res,next) => {
+    if(!req.isAuth) {
+        const error = new Error("Authorization Failed");
+        error.statusCode = 401;
+        throw error;
+    }
+    const userId = new ObjectId(req.id);
+    User.findById(userId)
+    .then(currUser => {
+        if(!currUser){
+            const error = new Error("User not found");
+            error.statusCode = 401;
+            throw error;
+        }
+        res.status(200).json({
+            email:currUser.email,
+            name:currUser.name,
+            userId:currUser.userId,
+            userCentre:currUser.userCentre
+        });
+    })
+    .catch(err => {
+        if(!err.statusCode) {
+            err.statusCode = 500
+        }
+        next(err);
+    })
+}
+
+exports.postPatient = (req,res,next) => {
+    if(!req.isAuth) {
+        const error = new Error("Authorization Failed");
+        error.statusCode = 401;
+        throw error;
+    }
+    res.json({
+        message:"working"
     })
 }
