@@ -18,7 +18,7 @@ exports.postSignup = (req,res,next) => {
     const password = req.body.signupPassword;
     const userId = req.body.signupId;
     const userCentre = req.body.signupCentre;
-    const confirmPass = req.body.signupCpassword;
+    const confirmPass = req.body.signupCPassword;
     if(confirmPass !== password){
         const error = new Error("Validation error");
         error.statusCode = 403;
