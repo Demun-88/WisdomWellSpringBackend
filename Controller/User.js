@@ -12,6 +12,7 @@ exports.postSignup = (req,res,next) => {
         error.statusCode = 403;
         throw error;
     }
+    console.log(req.body);
     const userName = req.body.signupName;
     const email = req.body.signupEmail;
     const password = req.body.signupPassword;
@@ -126,7 +127,7 @@ exports.postLogin = (req,res,next) => {
     })
 }
 
-exports.postLogout = (req,res,next) => {
+exports.getLogout = (req,res,next) => {
     if(!req.isAuth) {
         const error = new Error("Authorization Failed");
         error.statusCode = 401;
@@ -232,6 +233,7 @@ exports.postMedicine = (req,res,next) => {
         error.statusCode = 401;
         throw error;
     }
+    console.log(req.body);
     res.json({
         message:"working"
     })

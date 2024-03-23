@@ -12,7 +12,7 @@ router.post('/login',[
     body('loginemail').isEmail(),
     body('loginpassword').isAlphanumeric().isLength({min:8}),
 ],userController.postLogin);
-router.post('/logout',authenticator,userController.postLogout);
+router.get('/logout',authenticator,userController.getLogout);
 router.get('/profile',authenticator,userController.getProfile);
 router.post('/addPatient',authenticator,userController.postPatient);
 router.get('/getPatient',authenticator,userController.getPatient);
