@@ -1,4 +1,5 @@
 const User = require('../Models/User');
+const Patient = require('../Models/Patient');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { ObjectId, BSON } = require('mongodb');
@@ -106,6 +107,18 @@ exports.postLogin = (req,res,next) => {
     })
 }
 
+exports.postLogout = (req,res,next) => {
+    if(!req.isAuth) {
+        const error = new Error("Authorization Failed");
+        error.statusCode = 401;
+        throw error;
+    }
+    res.clearCookie("jwtToken");
+    res.status(200).json({
+        message:"Logout successfully"
+    })
+}
+
 exports.getProfile = (req,res,next) => {
     if(!req.isAuth) {
         const error = new Error("Authorization Failed");
@@ -136,6 +149,65 @@ exports.getProfile = (req,res,next) => {
 }
 
 exports.postPatient = (req,res,next) => {
+    if(!req.isAuth) {
+        const error = new Error("Authorization Failed");
+        error.statusCode = 401;
+        throw error;
+    }
+    const name = req.body.patientName;
+    const gender = req.body.patientGender;
+    const age = req.body.patientAge;
+    const phoneNo = req.body.patientNumber;
+    const patient = new Patient({
+        name: name,
+        gender: gender,
+        age: age,
+        phoneNo: phoneNo
+    });
+    patient.save()
+    .then(savedPatient => {
+        if(!savedPatient) {
+            const error = new Error('Error saving patient');
+            error.statusCode = 500;
+            throw error;
+        }
+        res.status(200).json({
+            patientId:savedPatient._id.toString(),
+            patientName: savedPatient.name,
+            patientGender: savedPatient.gender,
+            patientAge: savedPatient.age,
+            patientNumber: savedPatient.phoneNo
+        })
+    })
+    .catch(err => {
+        if(!err.statusCode) {
+            err.statusCode = 500
+        }
+        next(err);
+    })
+}
+
+exports.getPatient = (req,res,next) => {
+    if(!req.isAuth) {
+        const error = new Error("Authorization Failed");
+        error.statusCode = 401;
+        throw error;
+    }
+    Patient.find()
+    .then(patients => {
+        res.status(200).json({
+            patients:patients
+        })
+    })
+    .catch(err => {
+        if(!err.statusCode) {
+            err.statusCode = 500
+        }
+        next(err);
+    })
+}
+
+exports.postMedicine = (req,res,next) => {
     if(!req.isAuth) {
         const error = new Error("Authorization Failed");
         error.statusCode = 401;

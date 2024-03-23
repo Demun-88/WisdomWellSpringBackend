@@ -9,44 +9,48 @@ const patientSchema = new Schema({
         type: Number,
         required:true
     },
+    phoneNo:{
+        type: String,
+        required:true
+    },
     gender: {
-        type: Boolean,
+        type: String,
         required:true
     },
     medicineList: [
         {
             medicineName: {
                 type:String,
-                required:true
+                required:false
             },
             morning:{
                 before:{
                     type:Boolean,
-                    required:true
+                    required:false
                 },
                 msk:{
                     type:Boolean,
-                    required:true
+                    required:false
                 }
             },
             afternoon:{
                 before:{
                     type:Boolean,
-                    required:true
+                    required:false
                 },
                 msk:{
                     type:Boolean,
-                    required:true
+                    required:false
                 }
             },
             night:{
                 before:{
                     type:Boolean,
-                    required:true
+                    required:false
                 },
                 msk:{
                     type:Boolean,
-                    required:true
+                    required:false
                 }
             }
         }
