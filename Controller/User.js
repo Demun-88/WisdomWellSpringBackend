@@ -233,8 +233,35 @@ exports.postMedicine = (req,res,next) => {
         error.statusCode = 401;
         throw error;
     }
-    console.log(req.body);
-    res.json({
-        message:"working"
+    const patientId = new ObjectId(req.body.patientId);
+    const medName = req.body.medicineName;
+    const medTime = req.body.medicineTime;
+    const medFoodBox = req.body.medicineFoodBox;
+    Patient.findById(patientId)
+    .then(patient => {
+        if(!patient) {
+            const error = new Error("Patient Not Found");
+            error.statusCode = 404;
+            throw error;
+
+        }
+        const data = {
+            medicineName: medName,
+            time: medTime,
+            before:medFoodBox
+        }
+        patient.medicineList.push(data);
+        return patient.save();
+    })
+    .then(savedPatient => {
+        res.status(200).json({
+            patient:savedPatient
+        })
+    })
+    .catch(err => {
+        if(!err.statusCode) {
+            err.statusCode = 500;
+        }
+        next(err);
     })
 }

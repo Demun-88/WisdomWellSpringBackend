@@ -23,35 +23,13 @@ const patientSchema = new Schema({
                 type:String,
                 required:false
             },
-            morning:{
-                before:{
-                    type:Boolean,
-                    required:false
-                },
-                msk:{
-                    type:Boolean,
-                    required:false
-                }
+            time: {
+                type:String,
+                required:false
             },
-            afternoon:{
-                before:{
-                    type:Boolean,
-                    required:false
-                },
-                msk:{
-                    type:Boolean,
-                    required:false
-                }
-            },
-            night:{
-                before:{
-                    type:Boolean,
-                    required:false
-                },
-                msk:{
-                    type:Boolean,
-                    required:false
-                }
+            before: {
+                type:String,
+                required:false
             }
         }
     ]
