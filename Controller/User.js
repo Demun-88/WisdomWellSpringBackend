@@ -12,7 +12,6 @@ exports.postSignup = (req,res,next) => {
         error.statusCode = 403;
         throw error;
     }
-    console.log(req.body);
     const userName = req.body.signupName;
     const email = req.body.signupEmail;
     const password = req.body.signupPassword;
@@ -46,7 +45,8 @@ exports.postSignup = (req,res,next) => {
     .then(sUser => {
         const token = jwt.sign({
             email:sUser.email,
-            id:sUser._id.toString()
+            id:sUser._id.toString(),
+            centre:sUser.userCentre
         },process.env._SECRET,{
             expiresIn:'1h'
         });
@@ -101,7 +101,8 @@ exports.postLogin = (req,res,next) => {
         }
         const token = jwt.sign({
             email:currUser.email,
-            id:currUser._id.toString()
+            id:currUser._id.toString(),
+            centre:currUser.userCentre
         },process.env._SECRET,{
             expiresIn:'1h'
         });
@@ -178,10 +179,12 @@ exports.postPatient = (req,res,next) => {
     const gender = req.body.patientGender;
     const age = req.body.patientAge;
     const phoneNo = req.body.patientNumber;
+    const centre = req.userCentre;
     const patient = new Patient({
         name: name,
         gender: gender,
         age: age,
+        centre:centre,
         phoneNo: phoneNo
     });
     patient.save()
@@ -213,7 +216,9 @@ exports.getPatient = (req,res,next) => {
         error.statusCode = 401;
         throw error;
     }
-    Patient.find()
+    const currCentre = req.userCentre;
+
+    Patient.find({centre:currCentre})
     .then(patients => {
         res.status(200).json({
             patients:patients

@@ -17,6 +17,10 @@ const patientSchema = new Schema({
         type: String,
         required:true
     },
+    centre: {
+        type:String,
+        required:true
+    },
     medicineList: [
         {
             medicineName: {

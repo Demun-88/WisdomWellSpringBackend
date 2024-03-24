@@ -19,6 +19,7 @@ const authenticator = (req,res,next) => {
     }
     req.isAuth = true;
     req.id = decodedToken.id;
+    req.userCentre = decodedToken.centre;
     next();
 }
 
