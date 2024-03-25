@@ -54,7 +54,7 @@ exports.postSignup = (req,res,next) => {
             secure:true,
             httpOnly:true,
             maxAge:60*60*1000,
-            sameSite:true
+            sameSite:"None"
         });
         res.status(200).json({
             isLoggedIn:true,
@@ -110,7 +110,7 @@ exports.postLogin = (req,res,next) => {
             secure:true,
             httpOnly:true,
             maxAge:60*60*1000,
-            sameSite:true
+            sameSite:"None"
         });
         res.status(200).json({
             isLoggedIn:true,
