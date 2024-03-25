@@ -13,7 +13,7 @@ app.use(cookieParser());
 
 
 app.use((req,res,next) => {
-    res.setHeader('Access-Control-Allow-Origin','http://localhost:3000,https://mellow-zuccutto-8e1e18.netlify.app');
+    res.setHeader('Access-Control-Allow-Origin',['http://localhost:3000','https://mellow-zuccutto-8e1e18.netlify.app']);
     res.setHeader('Access-Control-Allow-Methods','GET, POST, DELETE, OPTIONS,PUT');
     res.setHeader('Access-Control-Allow-Headers','Content-Type, Origin,X-Requested-With,Authorization,*');
     res.setHeader('Access-Control-Allow-Credentials','true');
